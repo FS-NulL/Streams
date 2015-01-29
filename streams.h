@@ -46,6 +46,7 @@ namespace Streams
 			template <>
 			const char * GetReadFormatter<char*>(char*) { return "%s%n"; }
 
+			// Write Fixed
 			template<typename intfmt>
 			const char* GetFixedFormat(intfmt&)
 			{
@@ -64,22 +65,23 @@ namespace Streams
 
 			template <>
 			const char* GetFixedFormat<signed char>(signed char&) { return "%s%u.%.*u"; }
+
+			template <typename T>
+			struct Formatter
+			{
+				Formatter(T v, const char* fmt)
+					: _v(v),
+					_fmt(fmt)
+				{}
+				T _v;
+				char const* _fmt;
+			};
 		}
 
 		template <typename T>
-		struct Formatter
+		details::Formatter<T> Format(T v, const char* fmt)
 		{
-			Formatter(T v, const char* fmt)
-				: _v(v),
-				_fmt(fmt)
-			{}
-			T _v;
-			char const* _fmt;
-		};
-		template <typename T>
-		Formatter<T> Format(T v, const char* fmt)
-		{
-			return Formatter<T>(v, fmt);
+			return details::Formatter<T>(v, fmt);
 		}
 	}
 
@@ -261,7 +263,9 @@ namespace Streams
 	}
 
 	template<size_t N, typename T>
-	WriteStream<N>& operator<<(WriteStream<N>& str, Formatters::Formatter<T>&& input)
+	WriteStream<N>& 
+		operator<<
+		(WriteStream<N>& str, Formatters::details::Formatter<T>&& input)
 	{
 		return PrintToCharStream(str, input._v, input._fmt);
 	}
