@@ -13,7 +13,7 @@ namespace Streams
 		{
 			// Write format
 			template <typename T>
-			const char * GetWriteFormatter(T) { return 3.1; /* Don't compile no return*/ }
+			const char * GetWriteFormatter(T) { /* Don't compile no return*/ }
 
 			template <>
 			const char * GetWriteFormatter<double>(double) { return "%lf"; }
@@ -260,7 +260,6 @@ namespace Streams
 		return str;
 	}
 
-
 	template<size_t N, typename T>
 	WriteStream<N>& operator<<(WriteStream<N>& str, T&& input)
 	{
@@ -297,9 +296,11 @@ namespace Streams
 	}
 
 	template<size_t N, size_t dps, typename intfmt>
-	WriteStream<N>& operator<<(WriteStream<N>& str, FixedPoint::Fixed<dps, intfmt>&& val)
+	WriteStream<N>& 
+		operator<<(WriteStream<N>& str, FixedPoint::Fixed<dps, intfmt>&& val)
 	{
-		return operator<<(str, (FixedPoint::Fixed<dps, intfmt>&)val); // Call the non r-value ref?
+		// Call the non r-value ref overload
+		return operator<<(str, (FixedPoint::Fixed<dps, intfmt>&)val); 
 	}
 
 	template<size_t N, typename intfmt>
@@ -325,7 +326,8 @@ namespace Streams
 	template<size_t N, typename intfmt>
 	WriteStream<N>& operator<<(WriteStream<N>& str, FixedPoint::RTFixed<intfmt>&& val)
 	{
-		return operator<<(str, (FixedPoint::RTFixed<intfmt>&)val); // Call the non r-value ref?
+		// Call the non r-value ref overload
+		return operator<<(str, (FixedPoint::RTFixed<intfmt>&)val); 
 	}
 }
 
