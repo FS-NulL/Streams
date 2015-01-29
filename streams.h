@@ -193,11 +193,17 @@ namespace Streams
 		if (str.good)
 		{
 			// copy data from ReadStream into buf
-			// TODO: dont read > N items
 			const char* p = buf;
-			while (str.data <= str.end && *p)
+			while (
+				(str.data <= str.end) && // Dont go beyond the end of the stream
+				*p &&			// Stop at null-terminator
+				((p-buf) < M))	// Stop at end of char buffer
 			{
-				if (*str.data != *p) str.good = false;
+				if (*str.data != *p)
+				{
+					str.good = false;
+					return str;
+				}
 				str.data++;
 				p++;
 			}
@@ -219,7 +225,7 @@ namespace Streams
 	};
 
 	template<size_t N>
-	WriteStream<N> MakeCharStream(char(&arr)[N])
+	WriteStream<N> MakeWriteStream(char(&arr)[N])
 	{
 		return WriteStream<N>(arr);
 	}
@@ -240,7 +246,7 @@ namespace Streams
 
 	template<size_t N, typename T>
 	WriteStream<N>&
-		PrintToCharStream(WriteStream<N>& str, const T& val, const char* fmt)
+		PrintToWriteStream(WriteStream<N>& str, const T& val, const char* fmt)
 	{
 		auto free = str.get_free();
 
@@ -258,7 +264,7 @@ namespace Streams
 	template<size_t N, typename T>
 	WriteStream<N>& operator<<(WriteStream<N>& str, T&& input)
 	{
-		return PrintToCharStream(str, input,
+		return PrintToWriteStream(str, input,
 			Formatters::details::GetWriteFormatter(input));
 	}
 
@@ -267,7 +273,7 @@ namespace Streams
 		operator<<
 		(WriteStream<N>& str, Formatters::details::Formatter<T>&& input)
 	{
-		return PrintToCharStream(str, input._v, input._fmt);
+		return PrintToWriteStream(str, input._v, input._fmt);
 	}
 
 	template<size_t N, size_t dps, typename intfmt>
