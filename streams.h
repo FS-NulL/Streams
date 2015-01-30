@@ -143,7 +143,7 @@ namespace Streams
 				if (output < buf + M)
 				{
 					*output = 0; // null terminator
-					str.read_count++;
+					++str.read_count;
 				}
 				else
 				{
@@ -175,7 +175,7 @@ namespace Streams
 				}
 				else
 				{
-					str.read_count++;
+					++str.read_count;
 				}
 			}
 			else
@@ -204,8 +204,8 @@ namespace Streams
 					str.good = false;
 					return str;
 				}
-				str.data++;
-				p++;
+				++str.data;
+				++p;
 			}
 		}
 		return str;
@@ -237,7 +237,9 @@ namespace Streams
 		auto free = str.get_free();
 		while (free && *input)
 		{
-			*str.end++ = *input++;
+			*str.end = *input;
+			++str.end;
+			++input;
 			free--;
 		}
 		*str.end = '\0';
