@@ -276,7 +276,8 @@ namespace Streams
 	}
 
 	template<size_t N, size_t dps, typename intfmt>
-	WriteStream<N>& operator<<(WriteStream<N>& str, FixedPoint::Fixed<dps, intfmt>& val)
+	WriteStream<N>& 
+		operator<<(WriteStream<N>& str, FixedPoint::Fixed<dps, intfmt>& val)
 	{
 		auto free = str.get_free();
 
@@ -304,7 +305,8 @@ namespace Streams
 	}
 
 	template<size_t N, typename intfmt>
-	WriteStream<N>& operator<<(WriteStream<N>& str, FixedPoint::RTFixed<intfmt>& val)
+	WriteStream<N>& 
+		operator<<(WriteStream<N>& str, FixedPoint::RTFixed<intfmt>& val)
 	{
 		auto free = str.get_free();
 
@@ -324,7 +326,8 @@ namespace Streams
 	}
 
 	template<size_t N, typename intfmt>
-	WriteStream<N>& operator<<(WriteStream<N>& str, FixedPoint::RTFixed<intfmt>&& val)
+	WriteStream<N>& 
+		operator<<(WriteStream<N>& str, FixedPoint::RTFixed<intfmt>&& val)
 	{
 		// Call the non r-value ref overload
 		return operator<<(str, (FixedPoint::RTFixed<intfmt>&)val); 
