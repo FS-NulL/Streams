@@ -13,58 +13,58 @@ namespace Streams
 		{
 			// Write format
 			template <typename T>
-			const char * GetWriteFormatter(T) { /* Don't compile no return*/ }
+			static const char * GetWriteFormatter(T) { /* Don't compile no return*/ }
 
 			template <>
-			const char * GetWriteFormatter<double>(double) { return "%lf"; }
+			static const char * GetWriteFormatter<double>(double) { return "%lf"; }
 
 			template <>
-			const char * GetWriteFormatter<float>(float) { return "%f"; }
+			static const char * GetWriteFormatter<float>(float) { return "%f"; }
 
 			template <>
-			const char * GetWriteFormatter<int>(int) { return "%d"; }
+			static const char * GetWriteFormatter<int>(int) { return "%d"; }
 
 			template <>
-			const char * GetWriteFormatter<char*>(char*) { return "%s"; }
+			static const char * GetWriteFormatter<char*>(char*) { return "%s"; }
 
 			template <>
-			const char * GetWriteFormatter<char>(char) { return "%c"; }
+			static const char * GetWriteFormatter<char>(char) { return "%c"; }
 
 			// Read format
 			template <typename T>
-			const char * GetReadFormatter(T) { /* Don't compile no return*/ }
+			static const char * GetReadFormatter(T) { /* Don't compile no return*/ }
 
 			template <>
-			const char * GetReadFormatter<double>(double) { return "%lf%n"; }
+			static const char * GetReadFormatter<double>(double) { return "%lf%n"; }
 
 			template <>
-			const char * GetReadFormatter<float>(float) { return "%f%n"; }
+			static const char * GetReadFormatter<float>(float) { return "%f%n"; }
 
 			template <>
-			const char * GetReadFormatter<int>(int) { return "%d%n"; }
+			static const char * GetReadFormatter<int>(int) { return "%d%n"; }
 
 			template <>
-			const char * GetReadFormatter<char*>(char*) { return "%s%n"; }
+			static const char * GetReadFormatter<char*>(char*) { return "%s%n"; }
 
 			// Write Fixed
 			template<typename intfmt>
-			const char* GetFixedFormat(intfmt&)
+			static const char* GetFixedFormat(intfmt&)
 			{
 				// doesn't compile
 				// if the code doesn't compile here add another overload below
 			}
 
 			template <>
-			const char* GetFixedFormat<long long>(long long&) { return "%s%llu.%.*llu"; }
+			static const char* GetFixedFormat<long long>(long long&) { return "%s%llu.%.*llu"; }
 
 			template <>
-			const char* GetFixedFormat<int>(int&) { return "%s%u.%.*u"; }
+			static const char* GetFixedFormat<int>(int&) { return "%s%u.%.*u"; }
 
 			template <>
-			const char* GetFixedFormat<short>(short&) { return "%s%u.%.*u"; }
+			static const char* GetFixedFormat<short>(short&) { return "%s%u.%.*u"; }
 
 			template <>
-			const char* GetFixedFormat<signed char>(signed char&) { return "%s%u.%.*u"; }
+			static const char* GetFixedFormat<signed char>(signed char&) { return "%s%u.%.*u"; }
 
 			template <typename T>
 			struct Formatter
